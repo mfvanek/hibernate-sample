@@ -3,6 +3,7 @@ package com.mfvanek.hibernate;
 import com.mfvanek.hibernate.models.TestEvent;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -25,6 +26,7 @@ public class DemoApp {
         try {
             init();
             saveItem();
+            countTotal();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {
@@ -52,10 +54,22 @@ public class DemoApp {
     private static void saveItem() {
         // try (Session session = sessionFactory.withOptions().tenantIdentifier(SCHEMA_NAME).openSession()) {
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            session.save(new TestEvent("Our very first event!", new Date()));
-            session.save(new TestEvent("A follow up event", new Date()));
-            session.getTransaction().commit();
+            Transaction trn = session.beginTransaction();
+            try {
+                session.save(new TestEvent("Our very first event!", new Date()));
+                session.save(new TestEvent("A follow up event", new Date()));
+                session.getTransaction().commit();
+            } catch (Throwable e) {
+                logger.error(e.getMessage(), e);
+                trn.markRollbackOnly(); // ??? TODO
+            }
+        }
+    }
+
+    private static void countTotal() {
+        try (Session session = sessionFactory.openSession()) {
+            Long rowsCount = session.createQuery("select count(*) from TestEvent", Long.class).getSingleResult();
+            System.out.println("rows count = " + (rowsCount != null ? rowsCount : 0));
         }
     }
 }
