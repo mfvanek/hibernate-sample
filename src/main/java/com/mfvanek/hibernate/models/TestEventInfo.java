@@ -3,11 +3,13 @@ package com.mfvanek.hibernate.models;
 import com.mfvanek.hibernate.enums.TestEventType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "event_info", schema = "alien")
 public class TestEventInfo {
@@ -27,9 +29,13 @@ public class TestEventInfo {
     @JoinColumn(name = "event_id", nullable = false)
     private TestEvent eventId;
 
+    public TestEventInfo() {}
+
     public TestEventInfo(TestEvent eventId, TestEventType infoType, String info) {
         this.eventId = eventId;
         this.infoType = infoType;
         this.info = info;
     }
+
+    // TODO hashCode() have to be overridden here!!!
 }

@@ -15,6 +15,8 @@
         <!--<property name="connection.pool_size">1</property>-->
         <property name="hibernate.jdbc.batch_size">50</property>
         <property name="hibernate.jdbc.fetch_size">50</property>
+        <property name="hibernate.order_inserts">true</property>
+        <property name="hibernate.order_updates">true</property>
 
         <!-- External connection pooling -->
         <property name="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>
@@ -37,11 +39,8 @@
         <property name="use_sql_comments">true</property>
         <property name="hibernate.generate_statistics">true</property>
 
-        <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">create</property>
-        <!--<property name="hbm2ddl.auto">update</property>
-        <property name="hbm2ddl.auto">validate</property>-->
-        <!--<mapping class="com.waseem.UserDetails"/> -->
+        <property name="hbm2ddl.auto">update</property>
+
         <mapping class="com.mfvanek.hibernate.models.TestEvent" />
         <mapping class="com.mfvanek.hibernate.models.TestEventInfo" />
 

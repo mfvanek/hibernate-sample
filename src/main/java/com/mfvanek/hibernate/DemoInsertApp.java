@@ -20,9 +20,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class DemoApp {
+public class DemoInsertApp {
 
-    private static final Logger logger = LoggerFactory.getLogger(DemoApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(DemoInsertApp.class);
     private static SessionFactory sessionFactory;
     private static final int LOOP_COUNT = 1_000;
 
@@ -121,7 +121,7 @@ public class DemoApp {
             final ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
             // final ExecutorService threadPool = Executors.newFixedThreadPool(10);
             for (int i = 0; i < LOOP_COUNT; ++i) {
-                threadPool.submit(DemoApp::saveItem);
+                threadPool.submit(DemoInsertApp::saveItem);
             }
             threadPool.shutdown();
             threadPool.awaitTermination(10L, TimeUnit.SECONDS);
