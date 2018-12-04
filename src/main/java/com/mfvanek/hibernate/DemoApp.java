@@ -1,6 +1,8 @@
 package com.mfvanek.hibernate;
 
+import com.mfvanek.hibernate.enums.TestEventType;
 import com.mfvanek.hibernate.models.TestEvent;
+import com.mfvanek.hibernate.models.TestEventInfo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,7 +12,10 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -52,6 +57,7 @@ public class DemoApp {
         try {
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
             // so destroy it manually.
             StandardServiceRegistryBuilder.destroy(registry);
@@ -63,14 +69,27 @@ public class DemoApp {
         try (Session session = sessionFactory.openSession()) {
             Transaction trn = session.beginTransaction();
             try {
-                session.save(new TestEvent("Our very first event!", new Date()));
-                session.save(new TestEvent("A follow up event", new Date()));
-                session.getTransaction().commit();
+                final TestEvent firstEvent = new TestEvent("Our very first event!", new Date());
+                addTestEventInfo(firstEvent, 11);
+                session.save(firstEvent);
+
+                final TestEvent secondEvent = new TestEvent("A follow up event", new Date());
+                addTestEventInfo(secondEvent, 22);
+                session.save(secondEvent);
+                trn.commit();
             } catch (Throwable e) {
                 logger.error(e.getMessage(), e);
                 trn.markRollbackOnly(); // ??? TODO
             }
         }
+    }
+
+    private static void addTestEventInfo(TestEvent event, int number) {
+        final Set<TestEventInfo> info = new HashSet<>(Arrays.asList(
+                new TestEventInfo(event, TestEventType.MAIN, String.format("%d, first, main", number)),
+                new TestEventInfo(event, TestEventType.ADDITIONAL, String.format("%d, second, additional", number)),
+                new TestEventInfo(event, TestEventType.EXTENDED, String.format("%d, third, ext", number))));
+        event.setInfo(info);
     }
 
     private static void countTotal() {
