@@ -10,9 +10,7 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <!--
     <logger name="org.hibernate.stat">
         <level value="DEBUG" />
     </logger>
-    -->
 </configuration>
