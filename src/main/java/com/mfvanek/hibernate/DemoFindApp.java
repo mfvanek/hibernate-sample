@@ -1,8 +1,6 @@
 package com.mfvanek.hibernate;
 
-import com.mfvanek.hibernate.enums.TestEventType;
 import com.mfvanek.hibernate.models.TestEvent;
-import com.mfvanek.hibernate.models.TestEventInfo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,14 +9,6 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class DemoFindApp {
 
@@ -29,7 +19,7 @@ public class DemoFindApp {
         try {
             init();
             final TestEvent first = findById(11L);
-            System.out.println(first);
+            //System.out.println(first);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {
@@ -61,13 +51,16 @@ public class DemoFindApp {
             Transaction trn = session.beginTransaction();
             try {
                 result = session.get(TestEvent.class, id);
+                System.out.println(result);
                 trn.commit();
-                return result;
             } catch (Throwable e) {
                 logger.error(e.getMessage(), e);
                 trn.markRollbackOnly(); // ??? TODO
             }
         }
+        // LazyInitializationException will be thrown
+        // https://vladmihalcea.com/the-best-way-to-handle-the-lazyinitializationexception/
+        //System.out.println(result);
         return result;
     }
 }
