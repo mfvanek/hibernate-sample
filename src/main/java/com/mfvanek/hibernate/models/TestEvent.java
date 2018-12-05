@@ -30,7 +30,7 @@ public class TestEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "mess_body", nullable = false)
+    @Column(name = "mess_body", nullable = false, length = 250)
     private String message;
 
     @Column(name = "time_mark", nullable = false)
