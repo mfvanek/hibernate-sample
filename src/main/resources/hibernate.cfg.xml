@@ -5,14 +5,15 @@
         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <!-- Database connection settings -->
+        <!-- Database connection settings
         <property name="connection.driver_class">org.postgresql.Driver</property>
         <property name="connection.url">jdbc:postgresql://localhost:5432/test</property>
         <property name="connection.username">postgres</property>
         <property name="connection.password">postgres</property>
+        -->
 
         <!-- JDBC connection pool (use the built-in) -->
-        <!--<property name="connection.pool_size">1</property>-->
+        <property name="connection.pool_size">1</property>
         <property name="hibernate.jdbc.batch_size">50</property>
         <property name="hibernate.jdbc.fetch_size">50</property>
         <property name="hibernate.order_inserts">true</property>
@@ -24,8 +25,9 @@
         <property name="hibernate.hikari.maximumPoolSize">10</property>
         <property name="hibernate.hikari.poolName">hicari</property>
 
-        <!-- SQL dialect -->
+        <!-- SQL dialect
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
+         -->
 
         <!-- Enable Hibernate's automatic session context management -->
         <property name="current_session_context_class">thread</property>
@@ -33,7 +35,7 @@
         <!-- Disable the second-level cache  -->
         <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
 
-        <!-- Echo all executed SQL to stdout -->
+        <!-- Logging and statistics -->
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="use_sql_comments">true</property>

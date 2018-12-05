@@ -59,5 +59,11 @@
             <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.6.2</version>
+        </dependency>
     </dependencies>
 </project>
