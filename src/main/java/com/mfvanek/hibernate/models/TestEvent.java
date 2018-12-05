@@ -1,5 +1,6 @@
 package com.mfvanek.hibernate.models;
 
+import com.mfvanek.hibernate.consts.Const;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,7 +23,7 @@ import java.util.Set;
 @Setter
 @ToString
 @Entity
-@Table(name = "event", schema = "alien")
+@Table(name = "event", schema = Const.SCHEMA_NAME)
 public class TestEvent {
 
     @Id

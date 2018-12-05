@@ -1,12 +1,13 @@
 package com.mfvanek.hibernate;
 
 import com.mfvanek.hibernate.models.TestEvent;
+import com.mfvanek.hibernate.utils.ServiceRegistryUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +33,7 @@ public class DemoFindApp {
 
     private static void init() {
         // A SessionFactory is set up once for an application!
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from hibernate.cfg.xml
-                .build();
+        final ServiceRegistry registry = ServiceRegistryUtil.build();
         try {
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception e) {

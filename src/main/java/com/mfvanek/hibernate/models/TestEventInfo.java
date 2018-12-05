@@ -1,5 +1,6 @@
 package com.mfvanek.hibernate.models;
 
+import com.mfvanek.hibernate.consts.Const;
 import com.mfvanek.hibernate.enums.TestEventType;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Setter
 //@ToString NO!
 @Entity
-@Table(name = "event_info", schema = "alien")
+@Table(name = "event_info", schema = Const.SCHEMA_NAME)
 public class TestEventInfo {
 
     @Id

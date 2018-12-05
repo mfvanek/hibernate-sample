@@ -1,27 +1,21 @@
 package com.mfvanek.hibernate;
 
-import com.mfvanek.hibernate.consts.Const;
 import com.mfvanek.hibernate.enums.TestEventType;
 import com.mfvanek.hibernate.models.TestEvent;
 import com.mfvanek.hibernate.models.TestEventInfo;
-import com.mfvanek.hibernate.utils.PropertiesUtil;
+import com.mfvanek.hibernate.utils.ServiceRegistryUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,12 +26,6 @@ public class DemoInsertApp {
     private static final Logger logger = LoggerFactory.getLogger(DemoInsertApp.class);
     private static SessionFactory sessionFactory;
     private static final int LOOP_COUNT = 1_000;
-
-    /**
-     * There is another approach
-     * https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#multitenacy
-     */
-    //private static final String SCHEMA_NAME = "alien";
 
     public static void main(String[] args) {
         try {
@@ -57,25 +45,16 @@ public class DemoInsertApp {
     }
 
     private static void init() {
-            final Properties properties = PropertiesUtil.load();
-
-            final Configuration configuration = new Configuration();
-            configuration.configure(Const.HIBERNATE_CONFIG_FILE_NAME).addProperties(properties);
-
-            // A SessionFactory is set up once for an application!
-            final ServiceRegistry registry = new StandardServiceRegistryBuilder()
-                    .configure(Const.HIBERNATE_CONFIG_FILE_NAME)
-                    .loadProperties(Const.PROPERTY_FILE_NAME)
-                    //.applySettings(configuration.getProperties())
-                    .build();
-            try {
-                sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-                // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-                // so destroy it manually.
-                StandardServiceRegistryBuilder.destroy(registry);
-            }
+        // A SessionFactory is set up once for an application!
+        final ServiceRegistry registry = ServiceRegistryUtil.build();
+        try {
+            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
+            // so destroy it manually.
+            StandardServiceRegistryBuilder.destroy(registry);
+        }
     }
 
     private static void saveItem() {

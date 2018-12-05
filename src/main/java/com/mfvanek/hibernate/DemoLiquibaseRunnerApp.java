@@ -1,5 +1,7 @@
 package com.mfvanek.hibernate;
 
+import com.mfvanek.hibernate.consts.Const;
+import com.mfvanek.hibernate.utils.PropertiesUtil;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
@@ -8,49 +10,32 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.NoSuchElementException;
+import java.util.Properties;
 
 public class DemoLiquibaseRunnerApp {
 
-    /**
-     * <configuration>
-     *   <changeLogFile>src/main/resources/changelog.xml</changeLogFile>
-     *   <driver>com.mysql.jdbc.Driver</driver>
-     *   <url>jdbc:mysql://localhost:3306/myApp?createDatabaseIfNotExist=true</url>
-     *   jdbc:postgresql://localhost:5432/postgres?currentSchema=foo
-     *   <username>liquibaseTest</username>
-     *   <password>pass</password>
-     * </configuration>
-     * @param args
-     */
-    public static void main(String[] args) {
-        Connection c = null;
-        try {
-            //c = DriverManager.getConnection(DataSources.PROPERTIES.getProperty("jdbc.url"),
-            //        DataSources.PROPERTIES.getProperty("jdbc.username"),
-            //        DataSources.PROPERTIES.getProperty("jdbc.password"));
+    private static final Logger logger = LoggerFactory.getLogger(DemoLiquibaseRunnerApp.class);
 
-            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(c));
-            //log.info(DataSources.CHANGELOG_MASTER);
-            final Liquibase liquibase = new Liquibase("db/changelog/liquibase-changelog.xml", new ClassLoaderResourceAccessor(), database);
-            //liquibase.update("main");
+    public static void main(String[] args) {
+        final Properties properties = PropertiesUtil.load();
+        final String sourceUrl = properties.getProperty(Const.URL_PROPERTY_NAME);
+        // final String url = sourceUrl + "?createDatabaseIfNotExist=true&currentSchema=" + Const.SCHEMA_NAME; TODO
+        final String url = sourceUrl + "?createDatabaseIfNotExist=true&currentSchema=" + Const.SCHEMA_NAME + "2";
+        final String username = properties.getProperty(Const.USERNAME_PROPERTY_NAME);
+        final String password = properties.getProperty(Const.PASSWORD_PROPERTY_NAME);
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+            final Liquibase liquibase = new Liquibase(Const.LIQUIBASE_CHANGELOG_FILE, new ClassLoaderResourceAccessor(), database);
             liquibase.update(new Contexts(), new LabelExpression());
-        } catch (/*SQLException | */LiquibaseException e) {
-            e.printStackTrace();
-            throw new NoSuchElementException(e.getMessage());
-        } finally {
-            if (c != null) {
-                try {
-                    c.rollback();
-                    c.close();
-                } catch (SQLException e) {
-                    //nothing to do
-                }
-            }
+        } catch (SQLException | LiquibaseException e) {
+            logger.error(e.getMessage(), e);
         }
     }
 }
