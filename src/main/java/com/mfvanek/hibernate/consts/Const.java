@@ -9,6 +9,7 @@ public final class Const {
     public static final String URL_PROPERTY_NAME = "hibernate.connection.url";
     public static final String USERNAME_PROPERTY_NAME = "hibernate.connection.username";
     public static final String PASSWORD_PROPERTY_NAME = "hibernate.connection.password";
+    public static final String DRIVER_PROPERTY_NAME = "hibernate.connection.driver_class";
     public static final String LIQUIBASE_CHANGELOG_FILE = "db/changelog/liquibase-changelog.xml";
 
     /**

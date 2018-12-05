@@ -16,25 +16,48 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 public class DemoLiquibaseRunnerApp {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoLiquibaseRunnerApp.class);
 
+    // We can't automatically create a database from Java code
     public static void main(String[] args) {
+        try (Connection connection = getConnection()) {
+            createSchema(connection, Const.SCHEMA_NAME);
+            updateDatabaseStructure(connection);
+        } catch (SQLException | ClassNotFoundException e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+    private static Connection getConnection() throws SQLException, ClassNotFoundException {
         final Properties properties = PropertiesUtil.load();
-        final String sourceUrl = properties.getProperty(Const.URL_PROPERTY_NAME);
-        // final String url = sourceUrl + "?createDatabaseIfNotExist=true&currentSchema=" + Const.SCHEMA_NAME; TODO
-        final String url = sourceUrl + "?createDatabaseIfNotExist=true&currentSchema=" + Const.SCHEMA_NAME + "2";
+        final String url = properties.getProperty(Const.URL_PROPERTY_NAME);
         final String username = properties.getProperty(Const.USERNAME_PROPERTY_NAME);
         final String password = properties.getProperty(Const.PASSWORD_PROPERTY_NAME);
+        Class.forName(properties.getProperty(Const.DRIVER_PROPERTY_NAME));
+        return DriverManager.getConnection(url, username, password);
+    }
 
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+    private static void createSchema(Connection connection, String schemaName) {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("CREATE SCHEMA IF NOT EXISTS " + schemaName);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+    private static void updateDatabaseStructure(Connection connection) {
+        try {
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+            database.setDefaultSchemaName(Const.SCHEMA_NAME);
+            database.setLiquibaseSchemaName(Const.SCHEMA_NAME);
             final Liquibase liquibase = new Liquibase(Const.LIQUIBASE_CHANGELOG_FILE, new ClassLoaderResourceAccessor(), database);
             liquibase.update(new Contexts(), new LabelExpression());
-        } catch (SQLException | LiquibaseException e) {
+        } catch (LiquibaseException e) {
             logger.error(e.getMessage(), e);
         }
     }
