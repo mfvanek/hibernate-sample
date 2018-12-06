@@ -3,12 +3,14 @@ package com.mfvanek.hibernate.entities;
 import com.mfvanek.hibernate.consts.Const;
 import com.mfvanek.hibernate.enums.TestEventType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
 //@ToString NO!
 @Entity
 @Table(name = "event_info", schema = Const.SCHEMA_NAME)
@@ -28,8 +30,6 @@ public class TestEventInfo {
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private TestEvent eventId;
-
-    public TestEventInfo() {}
 
     public TestEventInfo(TestEvent eventId, TestEventType infoType, String info) {
         this.eventId = eventId;

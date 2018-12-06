@@ -31,12 +31,5 @@
         <property name="hibernate.generate_statistics">true</property>
 
         <property name="hbm2ddl.auto">validate</property>
-
-        <!-- Multitenancy configuration (with Hibernate multitenancy support) -->
-        <!--
-        <property name="hibernate.multiTenancy">SCHEMA</property>
-        <property name="hibernate.tenant_identifier_resolver">com.mfvanek.hibernate.utils.SchemaResolver</property>
-        <property name="hibernate.multi_tenant_connection_provider">com.mfvanek.hibernate.utils.MultiTenantProvider</property>
-        -->
     </session-factory>
 </hibernate-configuration>

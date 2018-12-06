@@ -44,7 +44,6 @@ public class DemoInsertApp {
     }
 
     private static void saveItem() {
-        // try (Session session = sessionFactory.withOptions().tenantIdentifier(SCHEMA_NAME).openSession()) {
         try (Session session = sessionFactory.openSession()) {
             Transaction trn = session.beginTransaction();
             try {

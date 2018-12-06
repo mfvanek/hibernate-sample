@@ -2,6 +2,7 @@ package com.mfvanek.hibernate.entities;
 
 import com.mfvanek.hibernate.consts.Const;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @ToString
 @Entity
 @Table(name = "event", schema = Const.SCHEMA_NAME)
@@ -39,8 +41,6 @@ public class TestEvent {
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventId")
     private Set<TestEventInfo> info = new HashSet<>();
-
-    public TestEvent() {}
 
     public TestEvent(String message, Date timeMark) {
         this.message = message;
