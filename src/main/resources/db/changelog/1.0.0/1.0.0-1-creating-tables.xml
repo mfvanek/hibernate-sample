@@ -29,7 +29,7 @@
             <column name="info_body" type="varchar(250)">
                 <constraints nullable="false"/>
             </column>
-            <column name="info_type" type="smallint">
+            <column name="info_type" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="event_id" type="bigint">

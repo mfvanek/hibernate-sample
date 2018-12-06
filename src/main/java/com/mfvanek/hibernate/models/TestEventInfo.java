@@ -22,8 +22,7 @@ public class TestEventInfo {
     private String info;
 
     @Enumerated(EnumType.ORDINAL)
-    //@Basic
-    @Column(name = "info_type", columnDefinition = "smallint", nullable = false)
+    @Column(name = "info_type", columnDefinition = "int", nullable = false)
     private TestEventType infoType;
 
     @ManyToOne
