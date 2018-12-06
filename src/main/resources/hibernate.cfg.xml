@@ -32,9 +32,6 @@
 
         <property name="hbm2ddl.auto">validate</property>
 
-        <mapping class="com.mfvanek.hibernate.models.TestEvent" />
-        <mapping class="com.mfvanek.hibernate.models.TestEventInfo" />
-
         <!-- Multitenancy configuration (with Hibernate multitenancy support) -->
         <!--
         <property name="hibernate.multiTenancy">SCHEMA</property>

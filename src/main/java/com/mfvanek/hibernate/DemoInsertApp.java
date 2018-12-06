@@ -1,15 +1,12 @@
 package com.mfvanek.hibernate;
 
+import com.mfvanek.hibernate.entities.TestEvent;
+import com.mfvanek.hibernate.entities.TestEventInfo;
 import com.mfvanek.hibernate.enums.TestEventType;
-import com.mfvanek.hibernate.models.TestEvent;
-import com.mfvanek.hibernate.models.TestEventInfo;
-import com.mfvanek.hibernate.utils.ServiceRegistryUtil;
+import com.mfvanek.hibernate.utils.SessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +26,7 @@ public class DemoInsertApp {
 
     public static void main(String[] args) {
         try {
-            init();
+            sessionFactory = SessionFactoryUtil.build();
             saveFromCurrentThread();
             saveFromNewSingleThread();
             saveUsingThreadPool();
@@ -41,19 +38,6 @@ public class DemoInsertApp {
                 sessionFactory.close();
                 sessionFactory = null;
             }
-        }
-    }
-
-    private static void init() {
-        // A SessionFactory is set up once for an application!
-        final ServiceRegistry registry = ServiceRegistryUtil.build();
-        try {
-            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
-            StandardServiceRegistryBuilder.destroy(registry);
         }
     }
 
@@ -72,7 +56,9 @@ public class DemoInsertApp {
                 trn.commit();
             } catch (Throwable e) {
                 logger.error(e.getMessage(), e);
-                trn.markRollbackOnly(); // ??? TODO
+                if (trn.isActive()) {
+                    trn.markRollbackOnly();
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.mfvanek.hibernate.models;
+package com.mfvanek.hibernate.entities;
 
 import com.mfvanek.hibernate.consts.Const;
 import lombok.Getter;

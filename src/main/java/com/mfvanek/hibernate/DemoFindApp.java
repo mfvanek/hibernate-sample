@@ -1,13 +1,11 @@
 package com.mfvanek.hibernate;
 
-import com.mfvanek.hibernate.models.TestEvent;
-import com.mfvanek.hibernate.utils.ServiceRegistryUtil;
+import com.mfvanek.hibernate.entities.TestEvent;
+import com.mfvanek.hibernate.utils.SessionFactoryUtil;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +16,9 @@ public class DemoFindApp {
 
     public static void main(String[] args) {
         try {
-            init();
+            sessionFactory = SessionFactoryUtil.build();
             final TestEvent first = findById(11L);
-            //System.out.println(first);
+            System.out.println("Inside main: " + first);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {
@@ -31,35 +29,24 @@ public class DemoFindApp {
         }
     }
 
-    private static void init() {
-        // A SessionFactory is set up once for an application!
-        final ServiceRegistry registry = ServiceRegistryUtil.build();
-        try {
-            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
-            StandardServiceRegistryBuilder.destroy(registry);
-        }
-    }
-
     private static TestEvent findById(Long id) {
         TestEvent result = new TestEvent();
         try (Session session = sessionFactory.openSession()) {
             Transaction trn = session.beginTransaction();
             try {
                 result = session.get(TestEvent.class, id);
-                System.out.println(result);
+                System.out.println("Inside Session: " + result);
+                // In order to avoid LazyInitializationException
+                Hibernate.initialize(result);
                 trn.commit();
             } catch (Throwable e) {
                 logger.error(e.getMessage(), e);
-                trn.markRollbackOnly(); // ??? TODO
+                if (trn.isActive()) {
+                    trn.markRollbackOnly();
+                }
             }
         }
-        // LazyInitializationException will be thrown
-        // https://vladmihalcea.com/the-best-way-to-handle-the-lazyinitializationexception/
-        //System.out.println(result);
+        System.out.println("Inside findById: " + result);
         return result;
     }
 }
