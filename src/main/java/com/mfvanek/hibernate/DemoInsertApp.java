@@ -31,6 +31,8 @@ public class DemoInsertApp {
             saveFromNewSingleThread();
             saveUsingThreadPool();
             countTotal();
+
+            SessionFactoryUtil.validateQueriesCount(2 * 3 * LOOP_COUNT * (1 + 3) + 1);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {

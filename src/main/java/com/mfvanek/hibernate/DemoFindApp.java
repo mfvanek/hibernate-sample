@@ -19,6 +19,8 @@ public class DemoFindApp {
             sessionFactory = SessionFactoryUtil.build();
             final TestEvent first = findById(11L);
             System.out.println("Inside main: " + first);
+            // First query is for reading event, and the second one is for reading info
+            SessionFactoryUtil.validateQueriesCount(2);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {
