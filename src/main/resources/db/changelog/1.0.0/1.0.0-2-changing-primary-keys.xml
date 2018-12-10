@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!-- Very dangerous! -->
+    <changeSet id="1.0.0-2-clear-table-event_info-20181210" author="ivan.vakhrushev">
+        <preConditions onFail="WARN">
+            <tableExists tableName="event_info" />
+        </preConditions>
+        <delete tableName="event_info" />
+    </changeSet>
+
+<!-- Not required for PostgreSQL, but might be required for MS SQL Server
+    <changeSet id="1.0.0-2-delete-pk-in-event_info-20181210" author="ivan.vakhrushev">
+        <preConditions onFail="WARN">
+            <tableExists tableName="event_info" />
+        </preConditions>
+        <dropPrimaryKey tableName="event_info" />
+    </changeSet>
+-->
+
+    <changeSet id="1.0.0-2-modify-pk-type-event_info-20181210" author="ivan.vakhrushev">
+        <preConditions onFail="WARN">
+            <tableExists tableName="event_info" />
+            <columnExists tableName="event_info" columnName="id"/>
+        </preConditions>
+        <modifyDataType columnName="id"
+                        newDataType="varchar(24)"
+                        tableName="event_info"/>
+    </changeSet>
+
+</databaseChangeLog>

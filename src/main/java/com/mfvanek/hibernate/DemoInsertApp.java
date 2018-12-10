@@ -3,6 +3,7 @@ package com.mfvanek.hibernate;
 import com.mfvanek.hibernate.entities.TestEvent;
 import com.mfvanek.hibernate.entities.TestEventInfo;
 import com.mfvanek.hibernate.enums.TestEventType;
+import com.mfvanek.hibernate.utils.RowsCountValidator;
 import com.mfvanek.hibernate.utils.SessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,12 +28,16 @@ public class DemoInsertApp {
     public static void main(String[] args) {
         try {
             sessionFactory = SessionFactoryUtil.build();
+            final RowsCountValidator validator = new RowsCountValidator(sessionFactory);
+
             saveFromCurrentThread();
             saveFromNewSingleThread();
             saveUsingThreadPool();
-            countTotal();
 
-            SessionFactoryUtil.validateQueriesCount(2 * 3 * LOOP_COUNT * (1 + 3) + 1);
+            final long EXPECTED_EVENTS_COUNT = 3 * 2 * LOOP_COUNT;
+            validator.validate(EXPECTED_EVENTS_COUNT, TestEvent.class);
+            validator.validate(3 * EXPECTED_EVENTS_COUNT, TestEventInfo.class);
+            SessionFactoryUtil.validateQueriesCount(12 * LOOP_COUNT + 4);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         } finally {
@@ -49,11 +54,11 @@ public class DemoInsertApp {
             try {
                 final TestEvent firstEvent = new TestEvent("Our very first event!", new Date());
                 addTestEventInfo(firstEvent, 11);
-                session.save(firstEvent);
+                session.persist(firstEvent);
 
                 final TestEvent secondEvent = new TestEvent("A follow up event", new Date());
                 addTestEventInfo(secondEvent, 22);
-                session.save(secondEvent);
+                session.persist(secondEvent);
                 trn.commit();
             } catch (Throwable e) {
                 logger.error(e.getMessage(), e);
@@ -66,17 +71,10 @@ public class DemoInsertApp {
 
     private static void addTestEventInfo(TestEvent event, int number) {
         final Set<TestEventInfo> info = new HashSet<>(Arrays.asList(
-                new TestEventInfo(event, TestEventType.MAIN, String.format("%d, first, main", number)),
-                new TestEventInfo(event, TestEventType.ADDITIONAL, String.format("%d, second, additional", number)),
-                new TestEventInfo(event, TestEventType.EXTENDED, String.format("%d, third, ext", number))));
-        event.setInfo(info);
-    }
-
-    private static void countTotal() {
-        try (Session session = sessionFactory.openSession()) {
-            Long rowsCount = session.createQuery("select count(*) from TestEvent", Long.class).getSingleResult();
-            System.out.println("rows count = " + (rowsCount != null ? rowsCount : 0));
-        }
+                new TestEventInfo(TestEventType.MAIN, String.format("%d, first, main", number)),
+                new TestEventInfo(TestEventType.ADDITIONAL, String.format("%d, second, additional", number)),
+                new TestEventInfo(TestEventType.EXTENDED, String.format("%d, third, ext", number))));
+        event.addEventInfo(info);
     }
 
     private static void saveFromCurrentThread() {

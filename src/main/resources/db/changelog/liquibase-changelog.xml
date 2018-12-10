@@ -8,5 +8,6 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <include file="db/changelog/1.0.0/1.0.0-1-creating-tables.xml" />
+    <include file="db/changelog/1.0.0/1.0.0-2-changing-primary-keys.xml" />
 
 </databaseChangeLog>
