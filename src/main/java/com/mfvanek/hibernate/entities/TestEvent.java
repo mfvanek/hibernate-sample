@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,10 +34,12 @@ public class TestEvent {
     private Long id;
 
     @Setter
+    @NotNull
     @Column(name = "mess_body", nullable = false, length = 250)
     private String message;
 
     @Setter
+    @NotNull
     @Column(name = "time_mark", nullable = false)
     private Date timeMark;
 

@@ -29,17 +29,20 @@ import javax.validation.constraints.Size;
 public class TestEventInfo {
 
     @Id
+    @NotNull
     @Size(min = 24, max = 24)
     @Column(name = "id", columnDefinition = "varchar", length = 24)
     private String id;
 
     @Setter
+    @NotNull
     @Column(name = "info_body", nullable = false)
     private String info;
 
     @Setter
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "info_type", columnDefinition = "int", nullable = false)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "info_type", columnDefinition = "varchar", length = 50, nullable = false)
     private TestEventType infoType;
 
     @NotNull

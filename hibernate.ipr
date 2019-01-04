@@ -14,6 +14,7 @@
     </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="me" />
+  <component name="Encoding" addBOMForNewFiles="with NO BOM" />
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="InspectionProjectProfileManager">
     <profile version="1.0">

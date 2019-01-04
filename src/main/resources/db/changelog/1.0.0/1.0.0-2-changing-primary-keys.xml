@@ -34,4 +34,14 @@
                         tableName="event_info"/>
     </changeSet>
 
+    <changeSet id="1.0.0-2-modify-enum-type-event_info-20190104" author="ivan.vakhrushev">
+        <preConditions onFail="WARN">
+            <tableExists tableName="event_info" />
+            <columnExists tableName="event_info" columnName="info_type"/>
+        </preConditions>
+        <modifyDataType columnName="info_type"
+                        newDataType="varchar(50)"
+                        tableName="event_info"/>
+    </changeSet>
+
 </databaseChangeLog>

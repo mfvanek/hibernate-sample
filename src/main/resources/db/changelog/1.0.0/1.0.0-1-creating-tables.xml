@@ -8,6 +8,9 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="1.0.0-1-creating-table-event-20181205" author="ivan.vakhrushev">
+        <preConditions onFail="WARN">
+            <not><tableExists tableName="event"/></not>
+        </preConditions>
         <createTable tableName="event">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -22,6 +25,9 @@
     </changeSet>
 
     <changeSet id="1.0.0-1-creating-table-event_info-20181205" author="ivan.vakhrushev">
+        <preConditions onFail="WARN">
+            <not><tableExists tableName="event_info"/></not>
+        </preConditions>
         <createTable tableName="event_info">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
