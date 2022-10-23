@@ -45,7 +45,12 @@ public class TestEvent {
 
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventId")
+    @ToString.Exclude
     private Set<TestEventInfo> info = new HashSet<>();
+
+    public void setInfo(Set<TestEventInfo> info) {
+        this.info = info;
+    }
 
     public TestEvent(String message, Date timeMark) {
         this.message = message;

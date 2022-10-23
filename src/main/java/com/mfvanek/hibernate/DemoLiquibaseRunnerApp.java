@@ -10,8 +10,7 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,9 +18,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+@Slf4j
 public class DemoLiquibaseRunnerApp {
-
-    private static final Logger logger = LoggerFactory.getLogger(DemoLiquibaseRunnerApp.class);
 
     // We can't automatically create a database from Java code
     public static void main(String[] args) {
@@ -29,7 +27,7 @@ public class DemoLiquibaseRunnerApp {
             createSchema(connection, Const.SCHEMA_NAME);
             updateDatabaseStructure(connection);
         } catch (SQLException | ClassNotFoundException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -46,7 +44,7 @@ public class DemoLiquibaseRunnerApp {
         try (Statement statement = connection.createStatement()) {
             statement.execute("CREATE SCHEMA IF NOT EXISTS " + schemaName);
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -58,7 +56,7 @@ public class DemoLiquibaseRunnerApp {
             final Liquibase liquibase = new Liquibase(Const.LIQUIBASE_CHANGELOG_FILE, new ClassLoaderResourceAccessor(), database);
             liquibase.update(new Contexts(), new LabelExpression());
         } catch (LiquibaseException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }
