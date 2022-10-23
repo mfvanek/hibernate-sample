@@ -5,11 +5,10 @@ import com.mfvanek.hibernate.entities.TestEventInfo;
 import com.mfvanek.hibernate.enums.TestEventType;
 import com.mfvanek.hibernate.utils.RowsCountValidator;
 import com.mfvanek.hibernate.utils.SessionFactoryUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -19,9 +18,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class DemoInsertApp {
 
-    private static final Logger logger = LoggerFactory.getLogger(DemoInsertApp.class);
     private static SessionFactory sessionFactory;
     private static final int LOOP_COUNT = 1_000;
 
@@ -39,7 +38,7 @@ public class DemoInsertApp {
             validator.validate(3 * EXPECTED_EVENTS_COUNT, TestEventInfo.class);
             SessionFactoryUtil.validateQueriesCount(12 * LOOP_COUNT + 4);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         } finally {
             if (sessionFactory != null) {
                 sessionFactory.close();
@@ -61,7 +60,7 @@ public class DemoInsertApp {
                 session.persist(secondEvent);
                 trn.commit();
             } catch (Throwable e) {
-                logger.error(e.getMessage(), e);
+                log.error(e.getMessage(), e);
                 if (trn.isActive()) {
                     trn.markRollbackOnly();
                 }
@@ -87,7 +86,7 @@ public class DemoInsertApp {
             thread.start();
             thread.join();
         } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -104,10 +103,10 @@ public class DemoInsertApp {
             threadPool.shutdown();
             threadPool.awaitTermination(10L, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
-        System.out.println(String.format("%s. Completed. Time elapsed = %d (ms)",
-                message, System.currentTimeMillis() - timeStart));
+        System.out.printf("%s. Completed. Time elapsed = %d (ms)%n",
+                message, System.currentTimeMillis() - timeStart);
     }
 
     private static class DataSaver implements Runnable {
@@ -125,8 +124,8 @@ public class DemoInsertApp {
             for (int i = 0; i < LOOP_COUNT; ++i) {
                 saveItem();
             }
-            System.out.println(String.format("%s. Completed. Time elapsed = %d (ms)",
-                    this.message, System.currentTimeMillis() - timeStart));
+            System.out.printf("%s. Completed. Time elapsed = %d (ms)%n",
+                    this.message, System.currentTimeMillis() - timeStart);
         }
     }
 }

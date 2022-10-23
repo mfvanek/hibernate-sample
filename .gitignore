@@ -1,2 +1,4 @@
 /target
 *.iws
+/hibernate.ipr
+/hibernate.sample.iml

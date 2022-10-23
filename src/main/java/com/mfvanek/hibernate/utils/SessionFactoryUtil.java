@@ -2,6 +2,7 @@ package com.mfvanek.hibernate.utils;
 
 import com.mfvanek.hibernate.entities.TestEvent;
 import com.mfvanek.hibernate.entities.TestEventInfo;
+import lombok.experimental.UtilityClass;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -10,9 +11,8 @@ import org.hibernate.service.ServiceRegistry;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+@UtilityClass
 public final class SessionFactoryUtil {
-
-    private SessionFactoryUtil() {}
 
     private static final AtomicLong counter = new AtomicLong();
 
