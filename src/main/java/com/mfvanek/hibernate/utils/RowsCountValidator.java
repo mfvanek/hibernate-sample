@@ -71,7 +71,7 @@ public class RowsCountValidator {
         }
 
         private void printCount(long rowsCount, boolean isBefore) {
-            System.out.println(String.format("%s: rows count %s = %d", this.clazz.getName(), isBefore ? "before" : "after", rowsCount));
+            System.out.printf("%s: rows count %s = %d%n", this.clazz.getName(), isBefore ? "before" : "after", rowsCount);
         }
     }
 }
