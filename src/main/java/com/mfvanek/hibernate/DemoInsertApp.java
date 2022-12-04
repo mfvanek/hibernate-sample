@@ -10,9 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,35 +19,28 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class DemoInsertApp {
 
-    private static SessionFactory sessionFactory;
     private static final int LOOP_COUNT = 1_000;
 
-    public static void main(String[] args) {
-        try {
-            sessionFactory = SessionFactoryUtil.build();
+    public static void main(final String[] args) {
+        try (SessionFactory sessionFactory = SessionFactoryUtil.build()) {
             final RowsCountValidator validator = new RowsCountValidator(sessionFactory);
 
-            saveFromCurrentThread();
-            saveFromNewSingleThread();
-            saveUsingThreadPool();
+            saveFromCurrentThread(sessionFactory);
+            saveFromNewSingleThread(sessionFactory);
+            saveUsingThreadPool(sessionFactory);
 
-            final long EXPECTED_EVENTS_COUNT = 3 * 2 * LOOP_COUNT;
-            validator.validate(EXPECTED_EVENTS_COUNT, TestEvent.class);
-            validator.validate(3 * EXPECTED_EVENTS_COUNT, TestEventInfo.class);
+            final long expectedEventsCount = 3 * 2 * LOOP_COUNT;
+            validator.validate(expectedEventsCount, TestEvent.class);
+            validator.validate(3 * expectedEventsCount, TestEventInfo.class);
             SessionFactoryUtil.validateQueriesCount(12 * LOOP_COUNT + 4);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-        } finally {
-            if (sessionFactory != null) {
-                sessionFactory.close();
-                sessionFactory = null;
-            }
         }
     }
 
-    private static void saveItem() {
+    private static void saveItem(final SessionFactory sessionFactory) {
         try (Session session = sessionFactory.openSession()) {
-            Transaction trn = session.beginTransaction();
+            final Transaction trn = session.beginTransaction();
             try {
                 final TestEvent firstEvent = new TestEvent("Our very first event!", new Date());
                 addTestEventInfo(firstEvent, 11);
@@ -68,21 +59,21 @@ public class DemoInsertApp {
         }
     }
 
-    private static void addTestEventInfo(TestEvent event, int number) {
-        final Set<TestEventInfo> info = new HashSet<>(Arrays.asList(
+    private static void addTestEventInfo(final TestEvent event, final int number) {
+        final Set<TestEventInfo> info = Set.of(
                 new TestEventInfo(TestEventType.MAIN, String.format("%d, first, main", number)),
                 new TestEventInfo(TestEventType.ADDITIONAL, String.format("%d, second, additional", number)),
-                new TestEventInfo(TestEventType.EXTENDED, String.format("%d, third, ext", number))));
+                new TestEventInfo(TestEventType.EXTENDED, String.format("%d, third, ext", number)));
         event.addEventInfo(info);
     }
 
-    private static void saveFromCurrentThread() {
-        new DataSaver("current thread").run();
+    private static void saveFromCurrentThread(final SessionFactory sessionFactory) {
+        new DataSaver("current thread", sessionFactory).run();
     }
 
-    private static void saveFromNewSingleThread() {
+    private static void saveFromNewSingleThread(final SessionFactory sessionFactory) {
         try {
-            final Thread thread = new Thread(new DataSaver("new single thread"), "pg_single");
+            final Thread thread = new Thread(new DataSaver("new single thread", sessionFactory), "pg_single");
             thread.start();
             thread.join();
         } catch (InterruptedException e) {
@@ -90,42 +81,42 @@ public class DemoInsertApp {
         }
     }
 
-    private static void saveUsingThreadPool() {
+    private static void saveUsingThreadPool(final SessionFactory sessionFactory) {
         final String message = "Saving items using thread pool";
-        System.out.println(message);
+        log.trace(message);
         final long timeStart = System.currentTimeMillis();
         try {
             final ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
             // final ExecutorService threadPool = Executors.newFixedThreadPool(10);
             for (int i = 0; i < LOOP_COUNT; ++i) {
-                threadPool.submit(DemoInsertApp::saveItem);
+                threadPool.submit(() -> DemoInsertApp.saveItem(sessionFactory));
             }
             threadPool.shutdown();
             threadPool.awaitTermination(10L, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             log.error(e.getMessage(), e);
         }
-        System.out.printf("%s. Completed. Time elapsed = %d (ms)%n",
-                message, System.currentTimeMillis() - timeStart);
+        log.trace("{}. Completed. Time elapsed = {} (ms)", message, System.currentTimeMillis() - timeStart);
     }
 
     private static class DataSaver implements Runnable {
 
         private final String message;
+        private final SessionFactory sessionFactory;
 
-        DataSaver(String message) {
+        DataSaver(final String message, final SessionFactory sessionFactory) {
             this.message = "Saving items from " + message;
+            this.sessionFactory = sessionFactory;
         }
 
         @Override
         public void run() {
-            System.out.println(this.message);
+            log.trace(this.message);
             final long timeStart = System.currentTimeMillis();
             for (int i = 0; i < LOOP_COUNT; ++i) {
-                saveItem();
+                saveItem(sessionFactory);
             }
-            System.out.printf("%s. Completed. Time elapsed = %d (ms)%n",
-                    this.message, System.currentTimeMillis() - timeStart);
+            log.trace("{}. Completed. Time elapsed = {} (ms)", this.message, System.currentTimeMillis() - timeStart);
         }
     }
 }

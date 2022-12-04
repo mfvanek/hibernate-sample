@@ -48,18 +48,18 @@ public class TestEvent {
     @ToString.Exclude
     private Set<TestEventInfo> info = new HashSet<>();
 
-    public void setInfo(Set<TestEventInfo> info) {
-        this.info = info;
-    }
-
-    public TestEvent(String message, Date timeMark) {
+    public TestEvent(final String message, final Date timeMark) {
         this.message = message;
         this.timeMark = timeMark;
     }
 
-    public void addEventInfo(Set<TestEventInfo> value) {
+    public void setInfo(final Set<TestEventInfo> info) {
+        this.info = info;
+    }
+
+    public void addEventInfo(final Set<TestEventInfo> value) {
         // this.info.clear();
-        for (TestEventInfo item : value) {
+        for (final TestEventInfo item : value) {
             item.setEventId(this);
             info.add(item);
         }

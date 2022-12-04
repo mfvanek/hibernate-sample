@@ -1,9 +1,6 @@
 package com.mfvanek.hibernate.consts;
 
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
-public final class Const {
+public abstract class Const {
 
     public static final String PROPERTY_FILE_NAME = "config.properties";
     public static final String HIBERNATE_CONFIG_FILE_NAME = "hibernate.cfg.xml";

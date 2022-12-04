@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @UtilityClass
 public final class SessionFactoryUtil {
 
-    private static final AtomicLong counter = new AtomicLong();
+    private static final AtomicLong COUNTER = new AtomicLong();
 
     public static SessionFactory build() {
         resetQueriesCount();
@@ -22,16 +22,16 @@ public final class SessionFactoryUtil {
         // A SessionFactory is set up once for an application!
         final ServiceRegistry registry = ServiceRegistryUtil.build();
         try {
-            return new MetadataSources(registry).
-                    addAnnotatedClass(TestEvent.class).
-                    addAnnotatedClass(TestEventInfo.class).
-                    buildMetadata().
-                    getSessionFactoryBuilder().
-                    applyStatementInspector((StatementInspector) sql -> {
-                        counter.incrementAndGet();
+            return new MetadataSources(registry)
+                    .addAnnotatedClass(TestEvent.class)
+                    .addAnnotatedClass(TestEventInfo.class)
+                    .buildMetadata()
+                    .getSessionFactoryBuilder()
+                    .applyStatementInspector((StatementInspector) sql -> {
+                        COUNTER.incrementAndGet();
                         return sql;
-                    }).
-                    build();
+                    })
+                    .build();
         } catch (Exception e) {
             // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
             // so destroy it manually.
@@ -41,14 +41,15 @@ public final class SessionFactoryUtil {
     }
 
     private static void resetQueriesCount() {
-        counter.set(0L);
+        COUNTER.set(0L);
     }
 
     private static long getQueriesCount() {
-        return counter.get();
+        return COUNTER.get();
     }
 
-    public static void validateQueriesCount(long expected) {
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
+    public static void validateQueriesCount(final long expected) {
         final long actual = getQueriesCount();
         if (expected != actual) {
             throw new RuntimeException(String.format("Invalid queries count: expected = %d, but was = %d", expected, actual));
