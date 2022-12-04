@@ -5,24 +5,28 @@ import com.mfvanek.hibernate.utils.PropertiesUtil;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
+import liquibase.Scope;
 import liquibase.database.Database;
+import liquibase.database.DatabaseConnection;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
 public class DemoLiquibaseRunnerApp {
 
     // We can't automatically create a database from Java code
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try (Connection connection = getConnection()) {
             createSchema(connection, Const.SCHEMA_NAME);
             updateDatabaseStructure(connection);
@@ -40,7 +44,7 @@ public class DemoLiquibaseRunnerApp {
         return DriverManager.getConnection(url, username, password);
     }
 
-    private static void createSchema(Connection connection, String schemaName) {
+    private static void createSchema(final Connection connection, final String schemaName) {
         try (Statement statement = connection.createStatement()) {
             statement.execute("CREATE SCHEMA IF NOT EXISTS " + schemaName);
         } catch (SQLException e) {
@@ -48,15 +52,16 @@ public class DemoLiquibaseRunnerApp {
         }
     }
 
-    private static void updateDatabaseStructure(Connection connection) {
-        try {
-            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+    @SneakyThrows
+    private static void updateDatabaseStructure(final Connection connection) {
+        final Map<String, Object> config = new HashMap<>();
+        Scope.child(config, () -> {
+            final DatabaseConnection dbConnection = new JdbcConnection(connection);
+            final Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(dbConnection);
             database.setDefaultSchemaName(Const.SCHEMA_NAME);
             database.setLiquibaseSchemaName(Const.SCHEMA_NAME);
             final Liquibase liquibase = new Liquibase(Const.LIQUIBASE_CHANGELOG_FILE, new ClassLoaderResourceAccessor(), database);
             liquibase.update(new Contexts(), new LabelExpression());
-        } catch (LiquibaseException e) {
-            log.error(e.getMessage(), e);
-        }
+        });
     }
 }

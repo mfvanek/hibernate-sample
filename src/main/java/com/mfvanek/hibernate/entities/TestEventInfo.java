@@ -15,6 +15,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
@@ -22,7 +23,7 @@ import org.bson.types.ObjectId;
 @Getter
 //@Setter NO SETTER HERE!
 @NoArgsConstructor
-//@ToString NO TOSTRING HERE!
+@ToString
 @Entity
 @Table(name = "event_info", schema = Const.SCHEMA_NAME)
 public class TestEventInfo {
@@ -44,16 +45,17 @@ public class TestEventInfo {
     @Column(name = "info_type", columnDefinition = "varchar", length = 50, nullable = false)
     private TestEventType infoType;
 
+    @ToString.Exclude
     @NotNull
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private TestEvent eventId;
 
-    public TestEventInfo(TestEventType infoType, String info) {
+    public TestEventInfo(final TestEventType infoType, final String info) {
         this(ObjectId.get(), infoType, info);
     }
 
-    private TestEventInfo(ObjectId id, TestEventType infoType, String info) {
+    private TestEventInfo(final ObjectId id, final TestEventType infoType, final String info) {
         this.id = id.toHexString();
         this.infoType = infoType;
         this.info = info;
@@ -69,7 +71,7 @@ public class TestEventInfo {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null) {
             return false;
         }
@@ -82,7 +84,7 @@ public class TestEventInfo {
             return false;
         }
 
-        TestEventInfo other = (TestEventInfo) o;
+        final TestEventInfo other = (TestEventInfo) o;
         return new EqualsBuilder()
                 .append(this.id, other.id)
                 .append(this.info, other.info)
@@ -91,12 +93,8 @@ public class TestEventInfo {
                 .isEquals();
     }
 
-    @Override
-    public String toString() {
-        return String.format("TestEventInfo={id=%s, infoType=%s, info='%s'}", id, infoType, info);
-    }
-
-    public void setEventId(TestEvent event) {
+    @SuppressWarnings("PMD.CompareObjectsWithEquals")
+    public void setEventId(final TestEvent event) {
         if (event == null) {
             throw new IllegalArgumentException("event can't be null");
         }

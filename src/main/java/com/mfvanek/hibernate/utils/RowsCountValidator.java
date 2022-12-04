@@ -2,6 +2,7 @@ package com.mfvanek.hibernate.utils;
 
 import com.mfvanek.hibernate.entities.TestEvent;
 import com.mfvanek.hibernate.entities.TestEventInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@Slf4j
 public class RowsCountValidator {
 
     private final SessionFactory sessionFactory;
@@ -21,11 +23,11 @@ public class RowsCountValidator {
         add(TestEventInfo.class);
     }
 
-    private <T> void add(Class<T> clazz) {
+    private <T> void add(final Class<T> clazz) {
         this.counters.put(clazz, new RowsCount<>(sessionFactory, clazz));
     }
 
-    public <T> void validate(final long expected, Class<T> clazz) {
+    public <T> void validate(final long expected, final Class<T> clazz) {
         final RowsCount<?> counter = this.counters.get(clazz);
         if (counter != null) {
             counter.validate(expected);
@@ -41,7 +43,7 @@ public class RowsCountValidator {
         private final long rowsBefore;
         private long rowsAfter;
 
-        RowsCount(final SessionFactory sessionFactory, Class<T> clazz) {
+        RowsCount(final SessionFactory sessionFactory, final Class<T> clazz) {
             this.sessionFactory = sessionFactory;
             this.clazz = clazz;
             this.rowsBefore = countTotal();
@@ -52,6 +54,7 @@ public class RowsCountValidator {
             this.printCount(this.rowsAfter, false);
         }
 
+        @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
         void validate(final long expected) {
             printCount(this.rowsBefore, true);
             calcAfter();
@@ -62,16 +65,16 @@ public class RowsCountValidator {
         }
 
         private long countTotal() {
-            long rowsCount;
+            final long rowsCount;
             try (Session session = sessionFactory.openSession()) {
-                Long result = session.createQuery(String.format("select count(*) from %s", this.clazz.getName()), Long.class).getSingleResult();
+                final Long result = session.createQuery(String.format("select count(*) from %s", this.clazz.getName()), Long.class).getSingleResult();
                 rowsCount = result != null ? result : 0;
             }
             return rowsCount;
         }
 
-        private void printCount(long rowsCount, boolean isBefore) {
-            System.out.printf("%s: rows count %s = %d%n", this.clazz.getName(), isBefore ? "before" : "after", rowsCount);
+        private void printCount(final long rowsCount, final boolean isBefore) {
+            log.info("{}: rows count {} = {}", this.clazz.getName(), isBefore ? "before" : "after", rowsCount);
         }
     }
 }
