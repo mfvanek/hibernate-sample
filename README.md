@@ -1,1 +1,4 @@
-# hibernate_sample
+# Hibernate sample app
+
+## Requirements
+Java 17+
