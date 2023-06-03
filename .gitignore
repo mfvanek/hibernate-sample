@@ -2,3 +2,4 @@
 *.iws
 /hibernate.ipr
 /hibernate.sample.iml
+/.idea/
