@@ -85,9 +85,8 @@ public class DemoInsertApp {
         final String message = "Saving items using thread pool";
         log.trace(message);
         final long timeStart = System.currentTimeMillis();
-        try {
-            final ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
-            // final ExecutorService threadPool = Executors.newFixedThreadPool(10);
+        final int threadsCount = Runtime.getRuntime().availableProcessors() + 1;
+        try (ExecutorService threadPool = Executors.newFixedThreadPool(threadsCount)) {
             for (int i = 0; i < LOOP_COUNT; ++i) {
                 threadPool.submit(() -> DemoInsertApp.saveItem(sessionFactory));
             }
