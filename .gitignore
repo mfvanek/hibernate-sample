@@ -3,3 +3,5 @@
 /hibernate.ipr
 /hibernate.sample.iml
 /.idea/
+/.gradle/
+/build/
