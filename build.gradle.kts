@@ -27,7 +27,7 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core:6.1.5.Final")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.1.5.Final")
     implementation("com.zaxxer:HikariCP:5.0.1")
-    implementation("org.postgresql:postgresql:42.5.4")
+    implementation("org.postgresql:postgresql:42.6.0")
     implementation("org.slf4j:slf4j-api:2.0.7")
     implementation("ch.qos.logback:logback-classic:1.4.7")
     implementation("org.liquibase:liquibase-core:4.20.0")
