@@ -17,9 +17,9 @@ jobs:
                 with:
                     distribution: 'temurin'
                     java-version: '19'
-                    cache: 'maven'
-            -   name: Build with Maven
-                run: mvn clean install
+                    cache: 'gradle'
+            -   name: Build with Gradle
+                run: ./gradlew build
             -   name: Upload coverage to Codecov
                 uses: codecov/codecov-action@v3
                 with:
