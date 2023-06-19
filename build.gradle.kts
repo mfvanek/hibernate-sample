@@ -40,7 +40,7 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.24.2")
 
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
-    errorprone("com.google.errorprone:error_prone_core:2.19.1")
+    errorprone("com.google.errorprone:error_prone_core:2.20.0")
 }
 
 java {
