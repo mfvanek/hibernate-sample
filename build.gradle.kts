@@ -24,8 +24,9 @@ version = "1.4.0-SNAPSHOT"
 description = "Hibernate sample app"
 
 dependencies {
-    implementation("org.hibernate.orm:hibernate-core:6.1.5.Final")
-    implementation("org.hibernate.orm:hibernate-hikaricp:6.1.5.Final")
+    implementation(platform("org.hibernate.orm:hibernate-platform:6.2.5.Final"))
+    implementation("org.hibernate.orm:hibernate-core")
+    implementation("org.hibernate.orm:hibernate-hikaricp")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("org.slf4j:slf4j-api:2.0.7")
