@@ -33,7 +33,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.8")
     implementation("org.liquibase:liquibase-core:4.22.0")
     implementation("org.mongodb:mongodb-driver:3.12.14")
-    implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
+    implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
 
     testImplementation(platform("org.junit:junit-bom:5.9.3"))
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
