@@ -11,7 +11,7 @@ plugins {
     id("pmd")
     id("com.github.spotbugs") version "5.0.14"
     id("net.ltgt.errorprone") version "3.1.0"
-    id("io.freefair.lombok") version "8.0.1"
+    id("io.freefair.lombok") version "8.1.0"
 }
 
 repositories {
@@ -24,16 +24,16 @@ version = "1.4.0-SNAPSHOT"
 description = "Hibernate sample app"
 
 dependencies {
-    implementation(platform("org.hibernate.orm:hibernate-platform:6.2.5.Final"))
+    implementation(platform("org.hibernate.orm:hibernate-platform:6.2.6.Final"))
     implementation("org.hibernate.orm:hibernate-core")
     implementation("org.hibernate.orm:hibernate-hikaricp")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("org.slf4j:slf4j-api:2.0.7")
     implementation("ch.qos.logback:logback-classic:1.4.8")
-    implementation("org.liquibase:liquibase-core:4.22.0")
+    implementation("org.liquibase:liquibase-core:4.23.0")
     implementation("org.mongodb:mongodb-driver:3.12.14")
-    implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
+    implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
 
     testImplementation(platform("org.junit:junit-bom:5.9.3"))
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
