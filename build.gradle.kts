@@ -31,7 +31,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("org.slf4j:slf4j-api:2.0.7")
     implementation("ch.qos.logback:logback-classic:1.4.8")
-    implementation("org.liquibase:liquibase-core:4.22.0")
+    implementation("org.liquibase:liquibase-core:4.23.0")
     implementation("org.mongodb:mongodb-driver:3.12.14")
     implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
 
