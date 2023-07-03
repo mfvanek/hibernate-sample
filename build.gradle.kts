@@ -11,7 +11,7 @@ plugins {
     id("pmd")
     id("com.github.spotbugs") version "5.0.14"
     id("net.ltgt.errorprone") version "3.1.0"
-    id("io.freefair.lombok") version "8.0.1"
+    id("io.freefair.lombok") version "8.1.0"
 }
 
 repositories {
