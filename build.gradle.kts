@@ -37,7 +37,7 @@ dependencies {
     implementation("org.mongodb:mongodb-driver:3.12.14")
     implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
 
-    testImplementation(platform("org.junit:junit-bom:5.9.3"))
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.assertj:assertj-core:3.24.2")
