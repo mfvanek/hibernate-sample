@@ -10,7 +10,7 @@ plugins {
     id("maven-publish")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "5.1.2"
+    id("com.github.spotbugs") version "5.1.3"
     id("net.ltgt.errorprone") version "3.1.0"
     id("io.freefair.lombok") version "8.2.2"
     id("com.github.ben-manes.versions") version "0.47.0"
@@ -22,7 +22,7 @@ repositories {
 }
 
 group = "com.mfvanek"
-version = "1.4.0-SNAPSHOT"
+version = "1.4.1"
 description = "Hibernate sample app"
 
 dependencies {
@@ -47,8 +47,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_19
+    targetCompatibility = JavaVersion.VERSION_19
     withJavadocJar()
     withSourcesJar()
 }
