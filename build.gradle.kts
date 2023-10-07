@@ -22,7 +22,7 @@ repositories {
 }
 
 group = "com.mfvanek"
-version = "1.4.1"
+version = "1.5.0"
 description = "Hibernate sample app"
 
 dependencies {
@@ -33,7 +33,8 @@ dependencies {
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("ch.qos.logback:logback-classic:1.4.11")
-    implementation("org.liquibase:liquibase-core:4.23.2")
+    implementation("org.liquibase:liquibase-core:4.24.0")
+    implementation("com.github.blagerweij:liquibase-sessionlock:1.6.5")
     implementation("org.mongodb:mongodb-driver:3.12.14")
     implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
 
