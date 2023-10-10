@@ -10,7 +10,7 @@ plugins {
     id("maven-publish")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "5.1.3"
+    id("com.github.spotbugs") version "5.1.4"
     id("net.ltgt.errorprone") version "3.1.0"
     id("io.freefair.lombok") version "8.4"
     id("com.github.ben-manes.versions") version "0.49.0"
@@ -34,7 +34,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("ch.qos.logback:logback-classic:1.4.11")
     implementation("org.liquibase:liquibase-core:4.24.0")
-    implementation("com.github.blagerweij:liquibase-sessionlock:1.6.5")
+    implementation("com.github.blagerweij:liquibase-sessionlock:1.6.6")
     implementation("org.mongodb:mongodb-driver:3.12.14")
     implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
 
