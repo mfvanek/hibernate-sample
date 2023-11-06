@@ -29,7 +29,7 @@ dependencies {
     implementation(platform("org.hibernate.orm:hibernate-platform:6.3.1.Final"))
     implementation("org.hibernate.orm:hibernate-core")
     implementation("org.hibernate.orm:hibernate-hikaricp")
-    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("ch.qos.logback:logback-classic:1.4.11")
