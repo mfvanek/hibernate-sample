@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -28,7 +27,6 @@ public class DemoLiquibaseRunnerApp {
     @SneakyThrows
     public static void main(final String[] args) {
         try (Connection connection = getConnection()) {
-            createSchema(connection, Const.SCHEMA_NAME);
             updateDatabaseStructure(connection);
         }
     }
@@ -41,14 +39,6 @@ public class DemoLiquibaseRunnerApp {
         final String password = properties.getProperty(Const.PASSWORD_PROPERTY_NAME);
         Class.forName(properties.getProperty(Const.DRIVER_PROPERTY_NAME));
         return DriverManager.getConnection(url, username, password);
-    }
-
-    @SneakyThrows
-    private static void createSchema(final Connection connection, final String schemaName) {
-        try (PreparedStatement statement = connection.prepareStatement("create schema if not exists ?")) {
-            statement.setString(1, schemaName);
-            statement.execute();
-        }
     }
 
     @SuppressWarnings("deprecation")

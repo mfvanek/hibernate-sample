@@ -5,3 +5,25 @@
 
 ## Requirements
 Java 19+
+
+## Docker Compose
+### Start
+```shell
+docker-compose --project-name="hibernate-test" up -d
+```
+
+### Stop
+```shell
+docker-compose --project-name="hibernate-test" down
+```
+
+## Explore volumes
+### List all volumes
+```shell
+docker volume ls
+```
+
+### Delete specified volume
+```shell
+docker volume rm hibernate-test_hibernatedb-data
+```
