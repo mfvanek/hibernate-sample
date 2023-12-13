@@ -16,8 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -26,16 +25,16 @@ import java.util.Properties;
 public class DemoLiquibaseRunnerApp {
 
     // We can't automatically create a database from Java code
+    @SneakyThrows
     public static void main(final String[] args) {
         try (Connection connection = getConnection()) {
             createSchema(connection, Const.SCHEMA_NAME);
             updateDatabaseStructure(connection);
-        } catch (SQLException | ClassNotFoundException e) {
-            log.error(e.getMessage(), e);
         }
     }
 
-    private static Connection getConnection() throws SQLException, ClassNotFoundException {
+    @SneakyThrows
+    private static Connection getConnection() {
         final Properties properties = PropertiesUtil.load();
         final String url = properties.getProperty(Const.URL_PROPERTY_NAME);
         final String username = properties.getProperty(Const.USERNAME_PROPERTY_NAME);
@@ -44,14 +43,15 @@ public class DemoLiquibaseRunnerApp {
         return DriverManager.getConnection(url, username, password);
     }
 
+    @SneakyThrows
     private static void createSchema(final Connection connection, final String schemaName) {
-        try (Statement statement = connection.createStatement()) {
-            statement.execute("CREATE SCHEMA IF NOT EXISTS " + schemaName);
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+        try (PreparedStatement statement = connection.prepareStatement("create schema if not exists ?")) {
+            statement.setString(1, schemaName);
+            statement.execute();
         }
     }
 
+    @SuppressWarnings("deprecation")
     @SneakyThrows
     private static void updateDatabaseStructure(final Connection connection) {
         final Map<String, Object> config = new HashMap<>();

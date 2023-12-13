@@ -4,4 +4,4 @@
 [![codecov](https://codecov.io/gh/mfvanek/hibernate-sample/branch/master/graph/badge.svg?token=S86JZL3IOR)](https://codecov.io/gh/mfvanek/hibernate-sample)
 
 ## Requirements
-Java 17+
+Java 19+

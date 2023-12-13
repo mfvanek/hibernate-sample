@@ -17,8 +17,6 @@ public class DemoFindApp {
             log.info("Inside main: {}", first);
             // First query is for reading event, and the second one is for reading info
             SessionFactoryUtil.validateQueriesCount(2);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
         }
     }
 
@@ -33,7 +31,7 @@ public class DemoFindApp {
                 Hibernate.initialize(result);
                 trn.commit();
             } catch (Throwable e) {
-                log.error(e.getMessage(), e);
+                log.error("Error occurred", e);
                 if (trn.isActive()) {
                     trn.markRollbackOnly();
                 }
