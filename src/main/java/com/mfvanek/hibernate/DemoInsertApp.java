@@ -5,11 +5,13 @@ import com.mfvanek.hibernate.entities.TestEventInfo;
 import com.mfvanek.hibernate.enums.TestEventType;
 import com.mfvanek.hibernate.utils.RowsCountValidator;
 import com.mfvanek.hibernate.utils.SessionFactoryUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -33,8 +35,6 @@ public class DemoInsertApp {
             validator.validate(expectedEventsCount, TestEvent.class);
             validator.validate(3 * expectedEventsCount, TestEventInfo.class);
             SessionFactoryUtil.validateQueriesCount(12 * LOOP_COUNT + 4);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
         }
     }
 
@@ -51,7 +51,7 @@ public class DemoInsertApp {
                 session.persist(secondEvent);
                 trn.commit();
             } catch (Throwable e) {
-                log.error(e.getMessage(), e);
+                log.error("Error occurred", e);
                 if (trn.isActive()) {
                     trn.markRollbackOnly();
                 }
@@ -71,16 +71,14 @@ public class DemoInsertApp {
         new DataSaver("current thread", sessionFactory).run();
     }
 
+    @SneakyThrows
     private static void saveFromNewSingleThread(final SessionFactory sessionFactory) {
-        try {
-            final Thread thread = new Thread(new DataSaver("new single thread", sessionFactory), "pg_single");
-            thread.start();
-            thread.join();
-        } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
-        }
+        final Thread thread = new Thread(new DataSaver("new single thread", sessionFactory), "pg_single");
+        thread.start();
+        thread.join(Duration.ofSeconds(100L));
     }
 
+    @SneakyThrows
     private static void saveUsingThreadPool(final SessionFactory sessionFactory) {
         final String message = "Saving items using thread pool";
         log.trace(message);
@@ -92,8 +90,6 @@ public class DemoInsertApp {
             }
             threadPool.shutdown();
             threadPool.awaitTermination(10L, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
         }
         log.trace("{}. Completed. Time elapsed = {} (ms)", message, System.currentTimeMillis() - timeStart);
     }
@@ -104,13 +100,13 @@ public class DemoInsertApp {
         private final SessionFactory sessionFactory;
 
         DataSaver(final String message, final SessionFactory sessionFactory) {
-            this.message = "Saving items from " + message;
+            this.message = message;
             this.sessionFactory = sessionFactory;
         }
 
         @Override
         public void run() {
-            log.trace(this.message);
+            log.trace("Saving items from {}", this.message);
             final long timeStart = System.currentTimeMillis();
             for (int i = 0; i < LOOP_COUNT; ++i) {
                 saveItem(sessionFactory);

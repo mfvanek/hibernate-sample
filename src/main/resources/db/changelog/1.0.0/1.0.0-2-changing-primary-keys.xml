@@ -15,25 +15,6 @@
         <delete tableName="event_info" />
     </changeSet>
 
-<!-- Not required for PostgreSQL, but might be required for MS SQL Server
-    <changeSet id="1.0.0-2-delete-pk-in-event_info-20181210" author="ivan.vakhrushev">
-        <preConditions onFail="WARN">
-            <tableExists tableName="event_info" />
-        </preConditions>
-        <dropPrimaryKey tableName="event_info" />
-    </changeSet>
--->
-
-    <changeSet id="1.0.0-2-modify-pk-type-event_info-20181210" author="ivan.vakhrushev">
-        <preConditions onFail="WARN">
-            <tableExists tableName="event_info" />
-            <columnExists tableName="event_info" columnName="id"/>
-        </preConditions>
-        <modifyDataType columnName="id"
-                        newDataType="varchar(24)"
-                        tableName="event_info"/>
-    </changeSet>
-
     <changeSet id="1.0.0-2-modify-enum-type-event_info-20190104" author="ivan.vakhrushev">
         <preConditions onFail="WARN">
             <tableExists tableName="event_info" />

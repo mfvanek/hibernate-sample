@@ -29,7 +29,7 @@
             <not><tableExists tableName="event_info"/></not>
         </preConditions>
         <createTable tableName="event_info">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="varchar(24)" autoIncrement="false">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="info_body" type="varchar(250)">

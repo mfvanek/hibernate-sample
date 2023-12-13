@@ -15,10 +15,7 @@ public class DemoFindApp {
         try (SessionFactory sessionFactory = SessionFactoryUtil.build()) {
             final TestEvent first = findById(sessionFactory, 11L);
             log.info("Inside main: {}", first);
-            // First query is for reading event, and the second one is for reading info
-            SessionFactoryUtil.validateQueriesCount(2);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            SessionFactoryUtil.validateQueriesCount(1);
         }
     }
 
@@ -33,7 +30,7 @@ public class DemoFindApp {
                 Hibernate.initialize(result);
                 trn.commit();
             } catch (Throwable e) {
-                log.error(e.getMessage(), e);
+                log.error("Error occurred", e);
                 if (trn.isActive()) {
                     trn.markRollbackOnly();
                 }

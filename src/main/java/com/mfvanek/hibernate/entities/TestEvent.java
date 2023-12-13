@@ -58,10 +58,7 @@ public class TestEvent {
     }
 
     public void addEventInfo(final Set<TestEventInfo> value) {
-        // this.info.clear();
-        for (final TestEventInfo item : value) {
-            item.setEventId(this);
-            info.add(item);
-        }
+        value.forEach(item -> item.setEventId(this));
+        info.addAll(value);
     }
 }

@@ -20,6 +20,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
 
+import java.util.Objects;
+
 @Getter
 //@Setter NO SETTER HERE!
 @NoArgsConstructor
@@ -80,11 +82,10 @@ public class TestEventInfo {
             return true;
         }
 
-        if (!(o instanceof TestEventInfo)) {
+        if (!(o instanceof TestEventInfo other)) {
             return false;
         }
 
-        final TestEventInfo other = (TestEventInfo) o;
         return new EqualsBuilder()
                 .append(this.id, other.id)
                 .append(this.info, other.info)
@@ -95,9 +96,7 @@ public class TestEventInfo {
 
     @SuppressWarnings("PMD.CompareObjectsWithEquals")
     public void setEventId(final TestEvent event) {
-        if (event == null) {
-            throw new IllegalArgumentException("event can't be null");
-        }
+        Objects.requireNonNull(event, "event can't be null");
 
         if (this.eventId != null && this.eventId != event) {
             throw new IllegalStateException("eventId is already set");
