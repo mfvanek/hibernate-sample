@@ -10,7 +10,7 @@ plugins {
     id("maven-publish")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "6.0.2"
+    id("com.github.spotbugs") version "6.0.4"
     id("net.ltgt.errorprone") version "3.1.0"
     id("io.freefair.lombok") version "8.4"
     id("com.github.ben-manes.versions") version "0.50.0"
@@ -33,7 +33,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.1")
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("ch.qos.logback:logback-classic:1.4.14")
-    implementation("org.liquibase:liquibase-core:4.25.0")
+    implementation("org.liquibase:liquibase-core:4.25.1")
     implementation("com.github.blagerweij:liquibase-sessionlock:1.6.9")
     implementation("org.mongodb:mongodb-driver:3.12.14")
     implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
@@ -45,18 +45,15 @@ dependencies {
 
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
 
-    errorprone("com.google.errorprone:error_prone_core:2.23.0")
+    errorprone("com.google.errorprone:error_prone_core:2.24.0")
     errorprone("jp.skypencil.errorprone.slf4j:errorprone-slf4j:0.1.21")
 
     spotbugsPlugins("jp.skypencil.findbugs.slf4j:bug-pattern:1.5.0")
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0")
-    spotbugsPlugins("com.mebigfatguy.sb-contrib:sb-contrib:7.6.3")
+    spotbugsPlugins("com.mebigfatguy.sb-contrib:sb-contrib:7.6.4")
 }
 
 java {
-//    toolchain {
-//        languageVersion = JavaLanguageVersion.of(19)
-//    }
     sourceCompatibility = JavaVersion.VERSION_19
     targetCompatibility = JavaVersion.VERSION_19
     withJavadocJar()
