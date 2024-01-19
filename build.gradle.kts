@@ -31,7 +31,7 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-hikaricp")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("org.postgresql:postgresql:42.7.1")
-    implementation("org.slf4j:slf4j-api:2.0.10")
+    implementation("org.slf4j:slf4j-api:2.0.11")
     implementation("ch.qos.logback:logback-classic:1.4.14")
     implementation("org.liquibase:liquibase-core:4.25.1")
     implementation("com.github.blagerweij:liquibase-sessionlock:1.6.9")
