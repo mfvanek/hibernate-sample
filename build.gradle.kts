@@ -10,10 +10,10 @@ plugins {
     id("maven-publish")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "6.0.6"
+    id("com.github.spotbugs") version "6.0.7"
     id("net.ltgt.errorprone") version "3.1.0"
     id("io.freefair.lombok") version "8.4"
-    id("com.github.ben-manes.versions") version "0.50.0"
+    id("com.github.ben-manes.versions") version "0.51.0"
 }
 
 repositories {
@@ -41,7 +41,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.1"))
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.assertj:assertj-core:3.25.1")
+    testImplementation("org.assertj:assertj-core:3.25.2")
 
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
 
