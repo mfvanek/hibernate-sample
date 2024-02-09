@@ -41,7 +41,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.assertj:assertj-core:3.25.2")
+    testImplementation("org.assertj:assertj-core:3.25.3")
 
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
 
