@@ -13,7 +13,7 @@
 
     <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod">
         <properties>
-            <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration['.*TestBase']"/>
+            <property name="violationSuppressXPath" value=".[@SimpleName = 'Const']"/>
         </properties>
     </rule>
 
@@ -40,14 +40,12 @@
     <rule ref="category/java/codestyle.xml/LinguisticNaming">
         <properties>
             <property name="checkSetters" value="false"/>
-            <property name="violationSuppressXPath"
-                      value="//ClassOrInterfaceBodyDeclaration/Annotation/MarkerAnnotation//Name[@Image='Test']"/>
         </properties>
     </rule>
 
     <rule ref="category/java/codestyle.xml/FieldNamingConventions">
         <properties>
-            <property name="exclusions" value="serialVersionUID|logger"/>
+            <property name="exclusions" value="serialVersionUID, logger"/>
         </properties>
     </rule>
 
@@ -56,11 +54,18 @@
         <exclude name="LoosePackageCoupling"/>
         <exclude name="AvoidCatchingGenericException"/>
         <exclude name="UseUtilityClass"/>
+        <exclude name="DataClass"/>
+    </rule>
+
+    <rule ref="category/java/design.xml/SimplifyBooleanReturns">
+        <properties>
+            <property name="violationSuppressXPath" value="./ancestor::*[@Name = 'equals'] | ./ancestor::*[@Name = 'hashCode'] | ./ancestor::*[@Name = 'test']"/>
+        </properties>
     </rule>
 
     <rule ref="category/java/design.xml/AbstractClassWithoutAnyMethod">
         <properties>
-            <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration['.*TestBase']"/>
+            <property name="violationSuppressXPath" value=".[@SimpleName = 'Const']"/>
         </properties>
     </rule>
 
@@ -79,15 +84,7 @@
     <rule ref="category/java/security.xml"/>
 
     <rule ref="category/java/errorprone.xml">
-        <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="AvoidCatchingThrowable"/> <!-- TODO restore -->
         <exclude name="TestClassWithoutTestCases"/>
-    </rule>
-
-    <rule ref="category/java/errorprone.xml/EqualsNull">
-        <properties>
-            <property name="violationSuppressXPath"
-                      value="//ClassOrInterfaceBodyDeclaration/Annotation/MarkerAnnotation//Name[@Image='Test']"/>
-        </properties>
     </rule>
 </ruleset>
