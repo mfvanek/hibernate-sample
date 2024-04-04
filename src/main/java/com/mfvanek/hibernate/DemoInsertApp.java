@@ -86,7 +86,7 @@ public class DemoInsertApp {
         final int threadsCount = Runtime.getRuntime().availableProcessors() + 1;
         try (ExecutorService threadPool = Executors.newFixedThreadPool(threadsCount)) {
             for (int i = 0; i < LOOP_COUNT; ++i) {
-                threadPool.submit(() -> DemoInsertApp.saveItem(sessionFactory));
+                threadPool.submit(() -> saveItem(sessionFactory));
             }
             threadPool.shutdown();
             threadPool.awaitTermination(10L, TimeUnit.SECONDS);
