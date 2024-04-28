@@ -1,7 +1,8 @@
 version: "3.9"
+
 services:
   postgres:
-    image: postgres:14.8-alpine3.18
+    image: postgres:16.2
     environment:
       POSTGRES_DB: "hibernate_test"
       POSTGRES_USER: "hibernate_user"
