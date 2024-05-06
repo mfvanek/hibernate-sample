@@ -26,7 +26,7 @@ version = "1.5.0"
 description = "Hibernate sample app"
 
 dependencies {
-    implementation(platform("org.hibernate.orm:hibernate-platform:6.4.6.Final"))
+    implementation(platform("org.hibernate.orm:hibernate-platform:6.5.0.Final"))
     implementation("org.hibernate.orm:hibernate-core")
     implementation("org.hibernate.orm:hibernate-hikaricp")
     implementation("com.zaxxer:HikariCP:5.1.0")
