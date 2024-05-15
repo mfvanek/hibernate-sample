@@ -10,7 +10,7 @@ plugins {
     id("maven-publish")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "6.0.13"
+    id("com.github.spotbugs") version "6.0.14"
     id("net.ltgt.errorprone") version "3.1.0"
     id("io.freefair.lombok") version "8.6"
     id("com.github.ben-manes.versions") version "0.51.0"
