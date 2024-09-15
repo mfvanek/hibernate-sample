@@ -45,7 +45,7 @@ dependencies {
 
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
 
-    errorprone("com.google.errorprone:error_prone_core:2.31.0")
+    errorprone("com.google.errorprone:error_prone_core:2.32.0")
     errorprone("jp.skypencil.errorprone.slf4j:errorprone-slf4j:0.1.25")
 
     spotbugsPlugins("jp.skypencil.findbugs.slf4j:bug-pattern:1.5.0")
