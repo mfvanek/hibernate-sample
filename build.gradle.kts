@@ -12,7 +12,7 @@ plugins {
     id("pmd")
     id("com.github.spotbugs") version "6.0.26"
     id("net.ltgt.errorprone") version "4.1.0"
-    id("io.freefair.lombok") version "8.10.2"
+    id("io.freefair.lombok") version "8.11"
     id("com.github.ben-manes.versions") version "0.51.0"
 }
 
