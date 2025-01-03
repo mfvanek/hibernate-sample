@@ -32,7 +32,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:6.2.1")
     implementation("org.postgresql:postgresql:42.7.4")
     implementation("org.slf4j:slf4j-api:2.0.16")
-    implementation("ch.qos.logback:logback-classic:1.5.12")
+    implementation("ch.qos.logback:logback-classic:1.5.15")
     implementation("org.liquibase:liquibase-core:4.30.0")
     implementation("com.github.blagerweij:liquibase-sessionlock:1.6.9")
     implementation("org.mongodb:mongodb-driver:3.12.14")
