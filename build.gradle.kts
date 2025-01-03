@@ -36,7 +36,7 @@ dependencies {
     implementation("org.liquibase:liquibase-core:4.30.0")
     implementation("com.github.blagerweij:liquibase-sessionlock:1.6.9")
     implementation("org.mongodb:mongodb-driver:3.12.14")
-    implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
+    implementation("org.hibernate.validator:hibernate-validator:8.0.2.Final")
 
     testImplementation(platform("org.junit:junit-bom:5.11.3"))
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
