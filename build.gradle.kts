@@ -10,7 +10,7 @@ plugins {
     id("maven-publish")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "6.0.27"
+    id("com.github.spotbugs") version "6.1.3"
     id("net.ltgt.errorprone") version "4.1.0"
     id("io.freefair.lombok") version "8.12"
     id("com.github.ben-manes.versions") version "0.52.0"
@@ -22,7 +22,7 @@ repositories {
 }
 
 group = "com.mfvanek"
-version = "1.5.0"
+version = "1.5.1"
 description = "Hibernate sample app"
 
 dependencies {
@@ -54,8 +54,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_19
-    targetCompatibility = JavaVersion.VERSION_19
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
     withJavadocJar()
     withSourcesJar()
 }
@@ -69,7 +69,7 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks {
     wrapper {
-        gradleVersion = "8.7"
+        gradleVersion = "8.12.1"
     }
 
     test {
