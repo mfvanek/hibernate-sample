@@ -13,7 +13,7 @@ plugins {
     id("com.github.spotbugs") version "6.0.27"
     id("net.ltgt.errorprone") version "4.1.0"
     id("io.freefair.lombok") version "8.12"
-    id("com.github.ben-manes.versions") version "0.51.0"
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 repositories {
