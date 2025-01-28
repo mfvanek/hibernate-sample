@@ -12,8 +12,8 @@ plugins {
     id("pmd")
     id("com.github.spotbugs") version "6.1.2"
     id("net.ltgt.errorprone") version "4.1.0"
-    id("io.freefair.lombok") version "8.11"
-    id("com.github.ben-manes.versions") version "0.51.0"
+    id("io.freefair.lombok") version "8.12"
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 repositories {
@@ -26,14 +26,14 @@ version = "1.5.0"
 description = "Hibernate sample app"
 
 dependencies {
-    implementation(platform("org.hibernate.orm:hibernate-platform:6.6.4.Final"))
+    implementation(platform("org.hibernate.orm:hibernate-platform:6.6.5.Final"))
     implementation("org.hibernate.orm:hibernate-core")
     implementation("org.hibernate.orm:hibernate-hikaricp")
     implementation("com.zaxxer:HikariCP:6.2.1")
     implementation("org.postgresql:postgresql:42.7.5")
     implementation("org.slf4j:slf4j-api:2.0.16")
     implementation("ch.qos.logback:logback-classic:1.5.16")
-    implementation("org.liquibase:liquibase-core:4.30.0")
+    implementation("org.liquibase:liquibase-core:4.31.0")
     implementation("com.github.blagerweij:liquibase-sessionlock:1.6.9")
     implementation("org.mongodb:mongodb-driver:3.12.14")
     implementation("org.hibernate.validator:hibernate-validator:8.0.2.Final")
@@ -41,7 +41,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.assertj:assertj-core:3.27.2")
+    testImplementation("org.assertj:assertj-core:3.27.3")
 
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
 
